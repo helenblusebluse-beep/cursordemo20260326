@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>工具小站｜在线文件与图片小工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="在线文件与图片小工具，一站式完成文件转换、图片压缩、裁剪、格式转换与水印操作。"
+    />
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- HEADER 顶部导航 -->
+      <header class="site-header">
+        <div class="container header-inner">
+          <div class="logo">工具小站</div>
+          <nav class="nav">
+            <button
+              type="button"
+              class="nav-link"
+              :class="{ active: currentSection === 'home' }"
+              @click="scrollTo('home')"
+            >
+              首页
+            </button>
+            <button
+              type="button"
+              class="nav-link"
+              :class="{ active: currentSection === 'tools' }"
+              @click="scrollTo('tools')"
+            >
+              工具
+            </button>
+            <button
+              type="button"
+              class="nav-link"
+              :class="{ active: currentSection === 'guide' }"
+              @click="scrollTo('guide')"
+            >
+              帮助
+            </button>
+            <button
+              type="button"
+              class="nav-link"
+              :class="{ active: currentSection === 'about' }"
+              @click="scrollTo('about')"
+            >
+              关于
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <!-- HERO 主视觉 -->
+        <section id="home" class="section hero">
+          <div class="container hero-inner">
+            <div>
+              <h1 class="hero-title">在线文件与图片小工具，一站式高效处理</h1>
+              <p class="hero-sub">
+                支持文件转换、图片压缩 / 裁剪 / 格式转换 / 水印，简单好用、无需安装。
+              </p>
+              <div class="hero-actions">
+                <button type="button" class="btn btn-primary" @click="scrollTo('tools')">
+                  立即开始使用
+                </button>
+                <button type="button" class="btn btn-ghost" @click="scrollTo('tools')">
+                  查看所有工具
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TOOLS 常用小工具区 -->
+        <section id="tools" class="section">
+          <div class="container">
+            <h2 class="section-title">常用小工具</h2>
+            <p class="section-sub">
+              选择下面任意一个工具，即可在浏览器中本地完成处理，文件不会上传到服务器。
+            </p>
+            <div class="tool-grid">
+              <a class="tool-card" href="./tools/file-convert.html">
+                <h3>文件转换</h3>
+                <p>支持常见图片类文件的简单转换。</p>
+              </a>
+              <a class="tool-card" href="./tools/image-compress.html">
+                <h3>图片压缩</h3>
+                <p>控制图片体积，适合上传和分享。</p>
+              </a>
+              <a class="tool-card" href="./tools/image-crop.html">
+                <h3>图片裁剪</h3>
+                <p>自由选择裁剪区域，突出关键内容。</p>
+              </a>
+              <a class="tool-card" href="./tools/image-format.html">
+                <h3>图片格式转换</h3>
+                <p>在 JPG / PNG / WebP 等格式之间转换。</p>
+              </a>
+              <a class="tool-card" href="./tools/image-watermark.html">
+                <h3>图片水印</h3>
+                <p>添加文字或图片水印，保护原创内容。</p>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- GUIDE 使用引导区 -->
+        <section id="guide" class="section section-alt">
+          <div class="container">
+            <h2 class="section-title">如何使用</h2>
+            <ol class="guide-list">
+              <li>在首页或“常用小工具”区选择需要的工具（如“图片压缩”）。</li>
+              <li>上传或拖拽文件到对应工具页面，根据提示设置参数。</li>
+              <li>点击开始处理，完成后下载结果文件。</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ABOUT 简要关于区（对应示意图中的说明/关于） -->
+        <section id="about" class="section">
+          <div class="container">
+            <h2 class="section-title">关于本网站</h2>
+            <p class="section-sub">
+              工具小站专注于常见文件与图片处理场景，界面简洁、操作步骤清晰，适合日常快速处理小文件。
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <!-- FOOTER 页脚 -->
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <span>© {{ year }} 工具小站</span>
+          <nav class="footer-nav">
+            <a href="#about">关于</a>
+            <a href="#guide">使用说明</a>
+            <a href="mailto:hello@example.com">联系我们</a>
+          </nav>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Vue 3（CDN 版） -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <!-- 页面脚本 -->
+    <script src="./assets/main.js"></script>
+  </body>
+</html>
+
