@@ -61,3 +61,20 @@ python bubble_sort.py
   - 新增：`.cursor/skills/rest-api-generator/SKILL.md`
   - 新增：`.cursor/skills/rest-api-generator/examples.md`
 
+### 2026-03-05：配置 Git 并关联 GitHub 仓库
+
+- **会话的主要目的**
+  - 为本项目配置 Git 提交身份和远程仓库，准备推送到 GitHub。
+- **完成的主要任务**
+  - 在本机全局设置 Git 用户名和邮箱：`helenblusebluse-beep` / `helenblusebluse@gmail.com`。
+  - 在项目中完成第一次提交（`first commit`）。
+  - 为当前仓库添加远程 `origin`：`https://github.com/helenblusebluse-beep/cursordemo20260326.git`。
+- **关键决策和解决方案**
+  - 不在远程 URL 中写入明文 token，避免泄露；推送时使用系统凭据/浏览器登录或 SSH。
+- **使用的技术栈**
+  - Git（本地版本控制与远程配置）
+  - GitHub（远程托管仓库）
+- **修改了哪些文件**
+  - Git 配置：设置全局 `user.name` / `user.email`（本机）。
+  - 项目 Git：新增远程 `origin` 指向 GitHub 仓库。
+
