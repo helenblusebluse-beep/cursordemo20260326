@@ -7,13 +7,26 @@
     <link rel="stylesheet" href="../assets/styles.css" />
   </head>
   <body>
-    <div class="container" style="padding: 24px 0">
-      <p><a href="../index.html">← 返回首页</a></p>
-      <h1 class="section-title">文件转换（占位页面）</h1>
+    <main class="container tool-page">
+      <div class="breadcrumb">
+        <a href="../index.html">← 返回首页</a>
+        <span class="badge">本地处理 · 不上传服务器</span>
+      </div>
+
+      <h1 class="section-title">文件转换</h1>
       <p class="section-sub">
-        当前阶段仅搭建页面骨架。后续开发中，这里将支持图片类文件的简单格式转换。
+        当前版本优先支持<strong>图片类文件</strong>的格式转换（PNG / JPG / WebP）。若你要转换图片格式，请使用下面入口。
       </p>
-    </div>
+
+      <section class="panel">
+        <h2 class="panel-title">图片类文件格式转换</h2>
+        <p class="panel-sub">说明：复杂文档（如 Word / PDF 深度转换）后续如需支持，将考虑引入后端服务。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="./image-format.html">前往：图片格式转换</a>
+          <a class="btn btn-ghost" href="./image-compress.html">顺便：图片压缩</a>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
 

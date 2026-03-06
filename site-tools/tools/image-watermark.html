@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>图片水印 - 工具小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="在浏览器本地为图片添加文字或图片水印并下载。" />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body>
+    <main class="container tool-page">
+      <div class="breadcrumb">
+        <a href="../index.html">← 返回首页</a>
+        <span class="badge">本地处理 · 不上传服务器</span>
+      </div>
+
+      <h1 class="section-title">图片水印</h1>
+      <p class="section-sub">支持文字水印；也支持叠加一张小图片作为水印（可选）。</p>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2 class="panel-title">1) 上传与预览</h2>
+          <p class="panel-sub">先上传底图（需要加水印的图片）。</p>
+
+          <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="拖拽上传区">
+            <div class="dropzone-inner">
+              <p class="dropzone-strong">拖拽图片到此处</p>
+              <p class="dropzone-hint">或点击选择底图（JPG / PNG / WebP）</p>
+              <input id="fileInput" type="file" accept="image/*" />
+            </div>
+          </div>
+
+          <div id="previewWrap" class="preview" style="margin-top: 12px; display: none">
+            <div class="preview-media">
+              <canvas id="canvas" aria-label="水印预览画布"></canvas>
+            </div>
+            <div class="meta">
+              <div>原图：<code id="srcMeta">-</code></div>
+              <div>导出后：<code id="outMeta">-</code></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel">
+          <h2 class="panel-title">2) 水印参数</h2>
+          <form class="form">
+            <div class="field">
+              <div class="label-row">
+                <label for="wmText">文字水印</label>
+                <span class="help">留空则不绘制文字</span>
+              </div>
+              <input id="wmText" class="input" type="text" placeholder="例如：© 工具小站" />
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="fontSize">字号</label>
+                <span class="help"><span id="fontSizeText">32</span> px</span>
+              </div>
+              <div class="range-row">
+                <input id="fontSize" type="range" min="10" max="120" step="1" value="32" />
+                <input id="fontSizeNum" class="input input-number" type="number" min="10" max="120" step="1" value="32" />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="color">颜色</label>
+                <span class="help">建议用浅色或深色</span>
+              </div>
+              <input id="color" class="input" type="color" value="#ffffff" />
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="opacity">透明度</label>
+                <span class="help"><span id="opacityText">0.35</span></span>
+              </div>
+              <div class="range-row">
+                <input id="opacity" type="range" min="0.05" max="1" step="0.01" value="0.35" />
+                <input id="opacityNum" class="input input-number" type="number" min="0.05" max="1" step="0.01" value="0.35" />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="position">位置</label>
+                <span class="help">九宫格</span>
+              </div>
+              <select id="position" class="select">
+                <option value="top-left">左上</option>
+                <option value="top">上中</option>
+                <option value="top-right">右上</option>
+                <option value="left">左中</option>
+                <option value="center" selected>居中</option>
+                <option value="right">右中</option>
+                <option value="bottom-left">左下</option>
+                <option value="bottom">下中</option>
+                <option value="bottom-right">右下</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="margin">边距</label>
+                <span class="help"><span id="marginText">16</span> px</span>
+              </div>
+              <div class="range-row">
+                <input id="margin" type="range" min="0" max="120" step="1" value="16" />
+                <input id="marginNum" class="input input-number" type="number" min="0" max="120" step="1" value="16" />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="wmImgInput">图片水印（可选）</label>
+                <span class="help">叠加小图标/Logo</span>
+              </div>
+              <input id="wmImgInput" class="input" type="file" accept="image/*" />
+              <div class="help">开启后会在相同位置叠加，大小可调。</div>
+            </div>
+
+            <div class="field" id="wmScaleField" style="display: none">
+              <div class="label-row">
+                <label for="wmScale">图片水印大小</label>
+                <span class="help"><span id="wmScaleText">0.20</span>（相对底图宽度）</span>
+              </div>
+              <div class="range-row">
+                <input id="wmScale" type="range" min="0.05" max="0.6" step="0.01" value="0.2" />
+                <input id="wmScaleNum" class="input input-number" type="number" min="0.05" max="0.6" step="0.01" value="0.2" />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="outType">导出格式</label>
+                <span class="help">默认 PNG</span>
+              </div>
+              <select id="outType" class="select">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="field" id="qualityField" style="display: none">
+              <div class="label-row">
+                <label for="quality">质量</label>
+                <span class="help"><span id="qualityText">0.92</span></span>
+              </div>
+              <div class="range-row">
+                <input id="quality" type="range" min="0.1" max="1" step="0.01" value="0.92" />
+                <input id="qualityNum" class="input input-number" type="number" min="0.1" max="1" step="0.01" value="0.92" />
+              </div>
+            </div>
+
+            <div class="actions">
+              <button id="btnRender" type="button" class="btn btn-primary" disabled>刷新预览</button>
+              <button id="btnExport" type="button" class="btn btn-secondary" disabled>下载结果</button>
+              <button id="btnReset" type="button" class="btn btn-ghost">清空</button>
+            </div>
+
+            <div id="toast" class="toast" style="display: none"></div>
+          </form>
+        </aside>
+      </div>
+    </main>
+
+    <script type="module" src="../assets/tools/imageWatermark.js"></script>
+  </body>
+</html>
+

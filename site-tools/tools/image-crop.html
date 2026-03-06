@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>图片裁剪 - 工具小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="在浏览器本地裁剪图片，选择区域后导出下载。" />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body>
+    <main class="container tool-page">
+      <div class="breadcrumb">
+        <a href="../index.html">← 返回首页</a>
+        <span class="badge">本地处理 · 不上传服务器</span>
+      </div>
+
+      <h1 class="section-title">图片裁剪</h1>
+      <p class="section-sub">在预览图上拖拽选择裁剪区域；可拖动选框移动位置，然后导出下载。</p>
+
+      <div class="tool-layout">
+        <section class="panel">
+          <h2 class="panel-title">1) 上传与裁剪区域</h2>
+          <p class="panel-sub">操作提示：按住鼠标左键拖拽创建选区；在选框内拖动可移动选区。</p>
+
+          <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="拖拽上传区">
+            <div class="dropzone-inner">
+              <p class="dropzone-strong">拖拽图片到此处</p>
+              <p class="dropzone-hint">或点击选择文件（JPG / PNG / WebP）</p>
+              <input id="fileInput" type="file" accept="image/*" />
+            </div>
+          </div>
+
+          <div id="previewWrap" class="preview" style="margin-top: 12px; display: none">
+            <div class="preview-media">
+              <canvas id="canvas" aria-label="裁剪画布"></canvas>
+            </div>
+            <div class="meta">
+              <div>原图：<code id="srcMeta">-</code></div>
+              <div>选区：<code id="cropMeta">-</code></div>
+              <div>导出后：<code id="outMeta">-</code></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel">
+          <h2 class="panel-title">2) 导出参数</h2>
+          <form class="form">
+            <div class="field">
+              <div class="label-row">
+                <label for="outType">导出格式</label>
+                <span class="help">默认 PNG</span>
+              </div>
+              <select id="outType" class="select">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="field" id="qualityField" style="display: none">
+              <div class="label-row">
+                <label for="quality">质量</label>
+                <span class="help"><span id="qualityText">0.92</span></span>
+              </div>
+              <div class="range-row">
+                <input id="quality" type="range" min="0.1" max="1" step="0.01" value="0.92" />
+                <input
+                  id="qualityNum"
+                  class="input input-number"
+                  type="number"
+                  min="0.1"
+                  max="1"
+                  step="0.01"
+                  value="0.92"
+                />
+              </div>
+            </div>
+
+            <div class="actions">
+              <button id="btnExport" type="button" class="btn btn-primary" disabled>导出并下载</button>
+              <button id="btnResetCrop" type="button" class="btn btn-secondary" disabled>重置选区</button>
+              <button id="btnReset" type="button" class="btn btn-ghost">清空</button>
+            </div>
+
+            <div id="toast" class="toast" style="display: none"></div>
+          </form>
+        </aside>
+      </div>
+    </main>
+
+    <script type="module" src="../assets/tools/imageCrop.js"></script>
+  </body>
+</html>
+
