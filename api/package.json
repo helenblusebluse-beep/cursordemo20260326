@@ -1,0 +1,16 @@
+{
+  "name": "user-api",
+  "version": "1.0.0",
+  "description": "RESTful User API (Express)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
