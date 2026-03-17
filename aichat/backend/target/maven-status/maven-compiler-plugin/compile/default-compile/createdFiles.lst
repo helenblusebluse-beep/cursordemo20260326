@@ -1,0 +1,16 @@
+com\example\aichat\user\UserStatus.class
+com\example\aichat\user\UserRole.class
+com\example\aichat\user\AdminUserController$UpdateUserRequest.class
+com\example\aichat\auth\AuthController$LoginRequest.class
+com\example\aichat\auth\CustomUserDetails.class
+com\example\aichat\user\AdminUserController.class
+com\example\aichat\user\UserRepository.class
+com\example\aichat\auth\CustomUserDetailsService.class
+com\example\aichat\auth\AuthController.class
+com\example\aichat\auth\JwtUtil.class
+com\example\aichat\user\UserService.class
+com\example\aichat\auth\AuthController$LoginResponse.class
+com\example\aichat\user\User.class
+com\example\aichat\user\AdminUserController$CreateUserRequest.class
+com\example\aichat\auth\SecurityConfig.class
+com\example\aichat\AiChatApplication.class

@@ -1,0 +1,8 @@
+com\example\zhishiku\model\Space.class
+com\example\zhishiku\ZhishikuApplication.class
+com\example\zhishiku\repository\SpaceRepository.class
+com\example\zhishiku\service\ArticleService.class
+com\example\zhishiku\controller\ArticleController$ArticleRequest.class
+com\example\zhishiku\controller\ArticleController.class
+com\example\zhishiku\model\Article.class
+com\example\zhishiku\repository\ArticleRepository.class

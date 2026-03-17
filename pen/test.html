@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>角色管理</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #111827;
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 12px;
+    }
+    .sidebar-logo {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #ffffff;
+    }
+    .nav-section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin: 16px 8px 8px;
+    }
+    .nav-list {
+      list-style: none;
+    }
+    .nav-item {
+      margin-bottom: 4px;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #e5e7eb;
+      text-decoration: none;
+    }
+    .nav-link:hover {
+      background-color: #1f2937;
+    }
+    .nav-link.active {
+      background-color: #2563eb;
+      color: #ffffff;
+    }
+    .nav-link span {
+      margin-left: 4px;
+    }
+    .nav-sublist {
+      list-style: none;
+      margin-left: 16px;
+      margin-top: 4px;
+    }
+    .nav-subitem .nav-link {
+      font-size: 13px;
+      padding: 6px 10px;
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      height: 56px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .topbar-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .breadcrumb {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .breadcrumb span {
+      margin: 0 4px;
+    }
+    .content {
+      padding: 20px 24px 32px;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .toolbar-left {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .search-input {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      min-width: 200px;
+      background-color: #ffffff;
+    }
+    .select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      background-color: #ffffff;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background-color: #2563eb;
+      color: #ffffff;
+    }
+    .btn-outline {
+      background-color: #ffffff;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+    .card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      padding: 16px 18px 20px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .card-subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    thead {
+      background-color: #f9fafb;
+    }
+    th,
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+    th {
+      font-weight: 600;
+      color: #4b5563;
+      font-size: 12px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background-color: #e5f2ff;
+      color: #1d4ed8;
+    }
+    .row-actions {
+      display: inline-flex;
+      gap: 6px;
+    }
+    .link {
+      color: #2563eb;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .form-section {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #f3f4f6;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .form-group {
+      min-width: 220px;
+      flex: 1;
+    }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+      resize: vertical;
+      background-color: #ffffff;
+    }
+    .form-textarea {
+      min-height: 60px;
+    }
+    .form-footer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">管理后台</div>
+
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a class="nav-link" href="#"><span>首页</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><span>内容</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><span>消息</span></a>
+        </li>
+      </ul>
+
+      <div class="nav-section-title">权限</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a class="nav-link active" href="#"><span>权限</span></a>
+          <ul class="nav-sublist">
+            <li class="nav-subitem">
+              <a class="nav-link active" href="#" data-section="role"><span>角色管理</span></a>
+            </li>
+            <li class="nav-subitem">
+              <a class="nav-link" href="#" data-section="user"><span>用户管理</span></a>
+            </li>
+            <li class="nav-subitem">
+              <a class="nav-link" href="#" data-section="account"><span>账号管理</span></a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="nav-section-title">日志</div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a class="nav-link" href="#"><span>操作日志</span></a>
+        </li>
+      </ul>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-title" id="pageTitle">角色管理</div>
+        <div class="breadcrumb" id="breadcrumb">
+          <span>首页</span> / <span>权限</span> / <span>角色管理</span>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="搜索角色名称 / 描述"
+            />
+            <select class="select">
+              <option value="">角色状态：全部</option>
+              <option value="enabled">启用</option>
+              <option value="disabled">停用</option>
+            </select>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn btn-outline">导出</button>
+            <button class="btn btn-primary">+ 添加角色</button>
+          </div>
+        </div>
+
+        <section class="card" id="section-role">
+          <div class="card-header">
+            <div>
+              <div class="card-title">角色列表</div>
+              <div class="card-subtitle">管理系统中的角色、权限范围和成员</div>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>角色名称</th>
+                <th>角色标识</th>
+                <th>描述</th>
+                <th>成员数</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>系统管理员</td>
+                <td>admin</td>
+                <td>拥有系统最高权限，可管理所有资源</td>
+                <td>3</td>
+                <td><span class="tag">启用</span></td>
+                <td>2024-01-10 09:30</td>
+                <td>
+                  <div class="row-actions">
+                    <span class="link">编辑</span>
+                    <span class="link">分配权限</span>
+                    <span class="link">更多</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>运营人员</td>
+                <td>operator</td>
+                <td>可管理内容与部分业务数据</td>
+                <td>12</td>
+                <td><span class="tag">启用</span></td>
+                <td>2024-02-02 14:20</td>
+                <td>
+                  <div class="row-actions">
+                    <span class="link">编辑</span>
+                    <span class="link">分配权限</span>
+                    <span class="link">更多</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>访客</td>
+                <td>guest</td>
+                <td>只读访问部分基础信息</td>
+                <td>35</td>
+                <td><span class="tag">启用</span></td>
+                <td>2024-03-15 11:05</td>
+                <td>
+                  <div class="row-actions">
+                    <span class="link">编辑</span>
+                    <span class="link">分配权限</span>
+                    <span class="link">更多</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="form-section">
+            <div class="form-group">
+              <label class="form-label">角色名称</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="请输入角色名称，例如：运营人员"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">角色标识</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="英文标识，例如：operator"
+              />
+            </div>
+            <div class="form-group" style="flex-basis: 100%;">
+              <label class="form-label">角色描述</label>
+              <textarea
+                class="form-textarea"
+                placeholder="用于说明该角色的职责范围和注意事项"
+              ></textarea>
+            </div>
+            <div class="form-footer">
+              <button class="btn btn-outline">取消</button>
+              <button class="btn btn-primary">保存角色</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 用户管理模块 -->
+        <section class="card hidden" id="section-user" style="margin-top: 20px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">用户管理</div>
+              <div class="card-subtitle">管理系统用户的基础信息与角色绑定</div>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>用户姓名</th>
+                <th>账号</th>
+                <th>所属角色</th>
+                <th>手机号</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>张三</td>
+                <td>zhangsan</td>
+                <td>系统管理员</td>
+                <td>13800000001</td>
+                <td><span class="tag">启用</span></td>
+                <td>2024-01-20 10:12</td>
+                <td>
+                  <div class="row-actions">
+                    <span class="link">编辑</span>
+                    <span class="link">重置密码</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>李四</td>
+                <td>lisi</td>
+                <td>运营人员</td>
+                <td>13800000002</td>
+                <td><span class="tag">启用</span></td>
+                <td>2024-02-05 15:30</td>
+                <td>
+                  <div class="row-actions">
+                    <span class="link">编辑</span>
+                    <span class="link">重置密码</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="form-section">
+            <div class="form-group">
+              <label class="form-label">用户姓名</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="请输入用户姓名"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">账号</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="登录账号，例如：zhangsan"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">所属角色</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="请选择或输入所属角色"
+              />
+            </div>
+            <div class="form-footer">
+              <button class="btn btn-outline">取消</button>
+              <button class="btn btn-primary">保存用户</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 账号管理模块 -->
+        <section class="card hidden" id="section-account" style="margin-top: 20px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">账号管理</div>
+              <div class="card-subtitle">管理系统登录账号与安全策略</div>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>账号</th>
+                <th>绑定用户</th>
+                <th>最后登录时间</th>
+                <th>登录IP</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>admin</td>
+                <td>系统管理员</td>
+                <td>2024-03-20 09:21</td>
+                <td>192.168.0.10</td>
+                <td><span class="tag">正常</span></td>
+                <td>
+                  <div class="row-actions">
+                    <span class="link">禁用</span>
+                    <span class="link">查看详情</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>operator01</td>
+                <td>运营人员</td>
+                <td>2024-03-18 16:05</td>
+                <td>192.168.0.23</td>
+                <td><span class="tag">正常</span></td>
+                <td>
+                  <div class="row-actions">
+                    <span class="link">禁用</span>
+                    <span class="link">查看详情</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="form-section">
+            <div class="form-group">
+              <label class="form-label">账号</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="请输入登录账号"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">绑定用户</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="请选择或输入绑定用户"
+              />
+            </div>
+            <div class="form-footer">
+              <button class="btn btn-outline">取消</button>
+              <button class="btn btn-primary">保存账号</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script>
+    const titleEl = document.getElementById('pageTitle');
+    const breadcrumbEl = document.getElementById('breadcrumb');
+    const sectionRole = document.getElementById('section-role');
+    const sectionUser = document.getElementById('section-user');
+    const sectionAccount = document.getElementById('section-account');
+    const sectionMap = {
+      role: {
+        title: '角色管理',
+        breadcrumb: '首页 / 权限 / 角色管理',
+        section: sectionRole
+      },
+      user: {
+        title: '用户管理',
+        breadcrumb: '首页 / 权限 / 用户管理',
+        section: sectionUser
+      },
+      account: {
+        title: '账号管理',
+        breadcrumb: '首页 / 权限 / 账号管理',
+        section: sectionAccount
+      }
+    };
+
+    function setBreadcrumb(text) {
+      const parts = text.split(' / ');
+      breadcrumbEl.innerHTML = parts.map(p => `<span>${p}</span>`).join(' / ');
+    }
+
+    function switchSection(key) {
+      Object.values(sectionMap).forEach(({ section }) => {
+        section.classList.add('hidden');
+      });
+      const cfg = sectionMap[key];
+      if (!cfg) return;
+      cfg.section.classList.remove('hidden');
+      titleEl.textContent = cfg.title;
+      setBreadcrumb(cfg.breadcrumb);
+
+      const links = document.querySelectorAll('.nav-subitem .nav-link');
+      links.forEach(link => {
+        if (link.dataset.section === key) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    document.querySelectorAll('.nav-subitem .nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const key = link.dataset.section;
+        if (key) {
+          switchSection(key);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
