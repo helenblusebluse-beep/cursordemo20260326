@@ -1,0 +1,30 @@
+{
+  "name": "zhulong-teaching-admin",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test:dept-api": "node scripts/smoke-department-api.mjs",
+    "test:class-api": "node scripts/smoke-class-api.mjs",
+    "test:employee-api": "node scripts/smoke-employee-api.mjs",
+    "test:student-api": "node scripts/smoke-student-api.mjs",
+    "test:all-api": "node scripts/smoke-department-api.mjs && node scripts/smoke-class-api.mjs && node scripts/smoke-employee-api.mjs && node scripts/smoke-student-api.mjs"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "element-plus": "^2.9.4",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.9.0",
+    "@types/node": "^22.10.2",
+    "typescript": "~5.9.3",
+    "vite": "^6.0.7",
+    "vue-tsc": "^2.2.0"
+  }
+}

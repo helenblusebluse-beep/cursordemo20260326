@@ -1,0 +1,69 @@
+server:
+  port: 8092
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # utf8mb4：与库表 utf8mb4 一致，避免中文写入/读出乱码（勿再用仅 3 字节的 utf8 参数）
+    url: jdbc:mysql://192.168.81.153:3306/zhulong?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    hikari:
+      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.example.zhulong.department.model
+  configuration:
+    map-underscore-to-camel-case: true
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+# JWT 登录：/login 颁发 token；除 /login 外访问 /api/** 须在请求头携带 token
+zhulong:
+  jwt:
+    secret: ${JWT_SECRET:zhulong-teaching-jwt-secret-min-32-chars-long!!}
+    expire-hours: 24
+  auth:
+    admin-username: root
+    admin-password: root
+    admin-name: 超级管理员
+    admin-id: 17
+
+# 员工头像：默认本机 data/avatar-uploads（不连 SFTP）。生产走 SFTP 时设 sftp-enabled: true
+app:
+  avatar:
+    sftp-enabled: false
+    local-directory: data/avatar-uploads
+    local-url-prefix: /uploads/avatars/
+    sftp:
+      host: 192.168.81.153
+      port: 22
+      username: root
+      password: ${AVATAR_SFTP_PASSWORD:123456}
+      remote-directory: /tmp
+    public-url-prefix: http://192.168.81.153/uploads/

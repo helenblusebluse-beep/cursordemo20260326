@@ -1,0 +1,9 @@
+node_modules
+dist
+# 本机头像上传目录
+data/avatar-uploads/
+*.local
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.zhulong.department.mapper.DepartmentMapper">
+
+    <resultMap id="DepartmentResultMap" type="com.example.zhulong.department.model.DepartmentDO">
+        <id property="id" column="id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="lastOperateTime" column="last_operate_time"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createdTime" column="created_time"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+        id, dept_name, last_operate_time, is_deleted, created_time
+    </sql>
+
+    <select id="selectList" resultMap="DepartmentResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM sys_department
+        WHERE is_deleted = 0
+        <if test="deptName != null and deptName != ''">
+            AND dept_name LIKE CONCAT('%', #{deptName}, '%')
+        </if>
+        ORDER BY last_operate_time DESC
+    </select>
+
+    <select id="selectById" resultMap="DepartmentResultMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM sys_department
+        WHERE id = #{id}
+          AND is_deleted = 0
+        LIMIT 1
+    </select>
+
+    <insert id="insertDepartment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_department (dept_name, last_operate_time, is_deleted, created_time)
+        VALUES (#{deptName}, NOW(), 0, NOW())
+    </insert>
+
+    <update id="updateDeptNameById">
+        UPDATE sys_department
+        SET dept_name = #{deptName},
+            last_operate_time = NOW()
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </update>
+
+    <update id="logicDeleteById">
+        UPDATE sys_department
+        SET is_deleted = 1,
+            last_operate_time = NOW()
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </update>
+
+    <select id="countByDeptName" resultType="int">
+        SELECT COUNT(1)
+        FROM sys_department
+        WHERE dept_name = #{deptName}
+          AND is_deleted = 0
+    </select>
+
+    <select id="countByDeptNameExcludeId" resultType="int">
+        SELECT COUNT(1)
+        FROM sys_department
+        WHERE dept_name = #{deptName}
+          AND id != #{id}
+          AND is_deleted = 0
+    </select>
+
+    <insert id="insertDepartmentLog">
+        INSERT INTO sys_department_log (dept_id, operate_type, before_name, after_name, operator_emp_id, operate_time)
+        VALUES (#{deptId}, #{operateType}, #{beforeName}, #{afterName}, #{operatorEmpId}, NOW())
+    </insert>
+
+</mapper>
+

@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "ZhulongApplication",
+      "request": "launch",
+      "mainClass": "com.example.zhulong.ZhulongApplication",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "Run ZhulongApplication (Maven Project)",
+      "request": "launch",
+      "mainClass": "com.example.zhulong.ZhulongApplication",
+      "projectName": "zhulong-backend"
+    }
+  ]
+}
