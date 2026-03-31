@@ -1,0 +1,9 @@
+# 若依工程克隆后常见产物
+**/target/
+**/node_modules/
+**/dist/
+**/.idea/
+**/.vscode/
+*.log
+.env.local
+.env.*.local

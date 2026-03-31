@@ -1,0 +1,31 @@
+# 示例：Nginx 同时托管前端静态资源并反向代理后端 API
+# 部署时请根据实际域名、证书路径、后端端口修改。
+
+server {
+    listen       80;
+    server_name  localhost;
+
+    # 前端打包产物（Vue3 build 输出目录）
+    location / {
+        root   /usr/share/nginx/html/zhongzhou;
+        try_files $uri $uri/ /index.html;
+        index  index.html;
+    }
+
+    # 若依常见配置：通过前缀转发到 Spring Boot
+    location /prod-api/ {
+        proxy_pass http://127.0.0.1:8080/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # 可选：WebSocket（若依通知等若启用）
+    # location /ws/ {
+    #     proxy_pass http://127.0.0.1:8080;
+    #     proxy_http_version 1.1;
+    #     proxy_set_header Upgrade $http_upgrade;
+    #     proxy_set_header Connection "upgrade";
+    # }
+}

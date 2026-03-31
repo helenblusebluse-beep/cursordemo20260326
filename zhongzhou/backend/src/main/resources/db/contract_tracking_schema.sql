@@ -1,0 +1,50 @@
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
+DROP TABLE IF EXISTS zz_contract_tracking;
+
+CREATE TABLE zz_contract_tracking (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  checkin_id BIGINT UNSIGNED NOT NULL COMMENT '入住申请ID(zz_checkin_application.id)',
+  contract_no VARCHAR(32) NOT NULL COMMENT '合同编号',
+  contract_name VARCHAR(64) NOT NULL COMMENT '合同名称',
+  contract_start_time DATETIME NOT NULL COMMENT '合同开始时间',
+  contract_end_time DATETIME NOT NULL COMMENT '合同结束时间',
+  invalidated_time DATETIME DEFAULT NULL COMMENT '合同失效时间(解除合同)',
+  invalidated_remark VARCHAR(100) DEFAULT NULL COMMENT '失效备注',
+  is_deleted TINYINT NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+  created_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  updated_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_contract_no (contract_no),
+  KEY idx_contract_checkin (checkin_id),
+  KEY idx_contract_created (created_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='合同跟踪表';
+
+-- 测试数据覆盖四种状态：未生效/生效中/已过期/已失效
+INSERT INTO zz_contract_tracking
+(checkin_id, contract_no, contract_name, contract_start_time, contract_end_time, invalidated_time, invalidated_remark, is_deleted, created_time)
+VALUES
+(1,'HT2048101015000001','安欣五保入住合同',DATE_ADD(CURDATE(), INTERVAL -20 DAY),DATE_ADD(CURDATE(), INTERVAL 20 DAY),NULL,NULL,0,DATE_ADD(NOW(), INTERVAL -10 DAY)),
+(2,'HT2048101015000002','高启强入住合同',DATE_ADD(CURDATE(), INTERVAL -30 DAY),DATE_ADD(CURDATE(), INTERVAL 5 DAY),NULL,NULL,0,DATE_ADD(NOW(), INTERVAL -9 DAY)),
+(3,'HT2048101015000003','陈泰安居住合同',DATE_ADD(CURDATE(), INTERVAL -40 DAY),DATE_ADD(CURDATE(), INTERVAL -5 DAY),NULL,NULL,0,DATE_ADD(NOW(), INTERVAL -8 DAY)),
+(4,'HT2048101015000004','李有田入住合同',DATE_ADD(CURDATE(), INTERVAL -25 DAY),DATE_ADD(CURDATE(), INTERVAL 15 DAY),DATE_ADD(CURDATE(), INTERVAL -1 DAY),'已解除合同',0,DATE_ADD(NOW(), INTERVAL -7 DAY)),
+(5,'HT2048101015000005','安长林入住合同',DATE_ADD(CURDATE(), INTERVAL 2 DAY),DATE_ADD(CURDATE(), INTERVAL 45 DAY),NULL,NULL,0,DATE_ADD(NOW(), INTERVAL -6 DAY)),
+(6,'HT2048101015000006','徐江长住合同',DATE_ADD(CURDATE(), INTERVAL -12 DAY),DATE_ADD(CURDATE(), INTERVAL 60 DAY),NULL,NULL,0,DATE_ADD(NOW(), INTERVAL -5 DAY)),
+(7,'HT2048101015000007','唐小龙长托合同',DATE_ADD(CURDATE(), INTERVAL -15 DAY),DATE_ADD(CURDATE(), INTERVAL 30 DAY),NULL,NULL,0,DATE_ADD(NOW(), INTERVAL -4 DAY)),
+(8,'HT2048101015000008','唐小虎入住合同',DATE_ADD(CURDATE(), INTERVAL 8 DAY),DATE_ADD(CURDATE(), INTERVAL 90 DAY),NULL,NULL,0,DATE_ADD(NOW(), INTERVAL -3 DAY)),
+(9,'HT2048101015000009','陈书婷托养合同',DATE_ADD(CURDATE(), INTERVAL -80 DAY),DATE_ADD(CURDATE(), INTERVAL -1 DAY),NULL,NULL,0,DATE_ADD(NOW(), INTERVAL -2 DAY)),
+(10,'HT2048101015000010','杨健入住合同',DATE_ADD(CURDATE(), INTERVAL -50 DAY),DATE_ADD(CURDATE(), INTERVAL 10 DAY),DATE_ADD(CURDATE(), INTERVAL -2 DAY),'已解除合同',0,DATE_ADD(NOW(), INTERVAL -1 DAY));
+
+-- 详情页测试数据：合同文件可预览、丙方信息可选展示（id=2 清空丙方字段）
+UPDATE zz_checkin_application
+SET contract_file_url = CONCAT('https://picsum.photos/seed/contract-', id, '/960/720')
+WHERE id BETWEEN 1 AND 10;
+
+UPDATE zz_checkin_application
+SET payer_name = '', payer_contact = ''
+WHERE id = 2;
+
+UPDATE zz_checkout_application
+SET voucher_submitter = '顾廷烨'
+WHERE checkin_id IN (4, 10);

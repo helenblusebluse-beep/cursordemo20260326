@@ -1,0 +1,28 @@
+# 本地开发依赖：仅 MySQL + Redis（不含若依应用本身）
+# 使用：在 zhongzhou/docker 目录执行
+#   docker compose -f docker-compose.dev.yml up -d
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: zhongzhou-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ry-vue
+      TZ: Asia/Shanghai
+    ports:
+      - "3307:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - zhongzhou-mysql-data:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    container_name: zhongzhou-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+
+volumes:
+  zhongzhou-mysql-data:
